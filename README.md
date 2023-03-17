@@ -44,4 +44,6 @@
 
 ## 其他
 
+[立即购买](https://u.jd.com/isdgk8D)
+
 [勘误表](./Corrigenda.md)
