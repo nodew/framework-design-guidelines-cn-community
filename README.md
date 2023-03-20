@@ -44,6 +44,8 @@
 
 ## 其他
 
-[立即购买](https://u.jd.com/isdgk8D)
+[阅读样章](./%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97%EF%BC%88%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89%E6%A0%B7%E7%AB%A0.pdf)
+
+[立即前往京东购买](https://u.jd.com/isdgk8D)
 
 [勘误表](./Corrigenda.md)
