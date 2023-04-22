@@ -20,7 +20,7 @@
 // 错误设计
 public struct PositiveInteger
 {
-    private int _value; // 译者注：英文原本中此处为字段名为 value，应为 _value
+    private int _value; // 译者注：英文原本中此处为字段名为 value，此处更正为 _value
 
     public PositiveInteger(int value)
     {
