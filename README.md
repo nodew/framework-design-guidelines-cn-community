@@ -46,6 +46,6 @@
 
 [阅读样章](./framework-design-guidelines-cn-3rd-sample.pdf)
 
-[立即前往京东购买](https://u.jd.com/isdgk8D)
+[立即前往京东购买](https://u.jd.com/QzTaW2k)
 
 [勘误表](./Corrigenda.md)
