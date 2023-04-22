@@ -10,6 +10,31 @@
 
 ## 第四章，“类型设计准则”
 
+### 4.7 结构体设计
+
+1. P82 第一段代码
+    
+    私有字段 `value` 应为 `_value`。
+
+> ```
+> // 错误设计
+> public struct PositiveInteger
+> {
+> 	private int _value; // 译者注：英文原本中此处为字段名为 value，应为 _value
+> 	
+> 	public PositiveInteger(int value)
+> 	{
+>		if (value <= 0) throw new ArgumentException(...);
+>		_value = value
+>	}
+>	
+>	public override string ToString()
+>	{
+>		return _value.ToString();
+>	}
+> }
+> ```
+
 ## 第五章，“成员设计准则”
 
 ## 第六章，“可扩展性设计”
