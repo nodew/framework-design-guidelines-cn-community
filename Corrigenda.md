@@ -155,6 +155,18 @@ public enum MemberScopes
 
 ## 第九章，“通用设计模式”
 
+### 9.6.2 实现 LINQ 支持的方法
+
+1. P308 最后一段
+
+> **√ DO** 当需要对查询进行检查时，要使用 `Expression<Func<...>>` 作为参数，而不是 `Func<...>`。
+> 更多细节见 <del>9.6.5</del> <ins>9.6.2.3</ins> 节。
+
+2. P309 第二段
+
+> 另一个使用表达式的原因是执行时优化。例如，一个<del>排序的</del><ins>有序的</ins>列表可以用<del>二进制搜索</del><ins>二分查找</ins>实现查找（Where 语句），
+> 这比标准的 \textrm{IEnumerable<T>} 或 \textrm{IQueryable<T>} 实现要高效得多。
+
 ## 附录 A，“C# 代码风格约定”
 
 ## 附录 B，“过时的指南”
