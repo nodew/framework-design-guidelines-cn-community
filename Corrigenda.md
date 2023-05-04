@@ -12,11 +12,32 @@
 
 ### 4.7 结构体设计
 
-1. P82 第一段代码
-    
-    私有字段 `value` 应为 `_value`。
+1. P82 示例代码
 
+原文：
+
+```csharp
+// 错误设计
+public struct PositiveInteger
+{
+    private int value;
+
+    public PositiveInteger(int value)
+    {
+        if (value <= 0) throw new ArgumentException(...);
+        _value = value
+    }
+
+    public override string ToString()
+    {
+        return _value.ToString();
+    }
+}
 ```
+
+更正为：
+
+```csharp
 // 错误设计
 public struct PositiveInteger
 {
@@ -32,6 +53,64 @@ public struct PositiveInteger
     {
         return _value.ToString();
     }
+}
+```
+
+### 4.8.1 设计标记枚举
+
+1. P89 示例代码
+
+原文：
+
+```csharp
+[Flags]
+public enum WatcherChangeTypes
+{
+    None = 0,
+    Created = 0x0002,
+    Deleted = 0x0004,
+    Changed = 0x0008,
+    Renamed = 0x0016,
+}
+```
+
+更正为：
+
+```csharp
+[Flags]
+public enum WatcherChangeTypes
+{
+    None = 0,
+    Created = 0x0002,
+    Deleted = 0x0004,
+    Changed = 0x0008,
+    Renamed = 0x0010,
+}
+```
+
+2. P91 示例代码
+
+原文：
+
+```csharp
+[Flags]
+public enum MemberScopes
+{
+    None = 0,
+    nstance = 0x4,
+    Static = 0x8,
+}
+```
+
+更正为：
+
+```csharp
+[Flags]
+public enum MemberScopes
+{
+    None = 0,
+    Instance = 0x4,
+    Static = 0x8,
 }
 ```
 
