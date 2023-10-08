@@ -118,6 +118,38 @@ public enum MemberScopes
 
 ## 第六章，“可扩展性设计”
 
+### 6.2 基类
+
+1. P184 最后一段示例代码
+
+原文：
+
+```csharp
+public Directory {
+    public Collection<string> GetFilenames(){
+        return new FilenameCollection(this);
+        }
+
+    private class FilenameCollection : Collection<string> {
+        ...
+    }
+}
+```
+
+更正为：
+
+```csharp
+public class Directory {
+    public Collection<string> GetFilenames(){
+        return new FilenameCollection(this);
+    }
+
+    private class FilenameCollection : Collection<string> {
+        ...
+    }
+}
+```
+
 ## 第七章，“异常”
 
 ### 7.2 选择抛出正确的异常类型
@@ -155,6 +187,175 @@ public enum MemberScopes
 
 ## 第九章，“通用设计模式”
 
+### 9.2.2 基于任务的异步模式
+
+1. P258 第一段
+...基于任务的异步模式可以直接使用这些类型手动实现，或者结合语言特性支持（如 C\# 中的 async/await，Visual Basic .NET 中的 <del>async</del><ins>Async</ins>/Await，以及 F\# 中的 async/let!/use!/do!）。该模式由以下元素组成：
+
+2. P259 第二段示例代码的注释
+
+原文：
+
+```csharp
+// 正确：支持 Cancellation 作为可选参数
+public Task WriteAsync(
+    string text,
+    CancellationToken cancellationToken = default) { ... }
+```
+
+更正为：
+
+```csharp
+// 正确：支持 CancellationToken 作为可选参数
+public Task WriteAsync(
+    string text,
+    CancellationToken cancellationToken = default) { ... }
+```
+### 9.2.4 为现有的同步方法制作一个异步变体
+
+1. P266 第二段示例代码
+
+原文：
+
+```csharp
+public readonly struct SomeResult {
+    public int CalculatedResult { get; }
+    public string UpdatedValue { get; }
+
+    public DivisionResult(int result, string updatedValue) { ... }
+}
+```
+
+更正为：
+
+```csharp
+public readonly struct SomeResult {
+    public int CalculatedResult { get; }
+    public string UpdatedValue { get; }
+
+    public SomeResult(int result, string updatedValue) { ... }
+}
+```
+
+### 9.2.5 异步模式一致性的实现准则
+
+1. P270 倒数第二条准则
+
+> **× DON'T** 不要在异<del>常</del><ins>步</ins>方法中调用 `Task.Wait()` 或读取 `Task.Result` 属性；相反，使用 await。
+
+### 9.2.10 await foreach 的使用准则
+
+1. P275 - P276 示例代码
+
+原文：
+
+```csharp
+// 错误
+public Task<int> MaxAsync(
+    IAsyncEnumerable<int> source,
+    CancellationToken cancellationToken = default) {
+
+    int max = int.MinValue;
+    bool hasValue = false;
+
+    // cancellationToken 没有被使用
+    async foreach (int value in source.ConfigureAwait(false)) {
+        hasValue = true;
+        if (value > max) {
+            max = value;
+        }
+    }
+
+    return hasValue ? max : throw new InvalidOperationException();
+}
+
+// 正确
+public Task<int> MaxAsync(
+    IAsyncEnumerable<int> source,
+    CancellationToken cancellationToken = default) {
+
+    int max = int.MinValue;
+    bool hasValue = false;
+
+    // cancellationToken 被传入了迭代器中
+    async foreach (
+        int value in source.WithCancellation(cancellationToken).ConfigureAwait(false)
+    ) {
+        hasValue = true;
+        if (value > max) {
+            max = value;
+        }
+    }
+
+    return hasValue ? max : throw new InvalidOperationException();
+}
+```
+
+更正为：
+
+```csharp
+// 错误
+public async Task<int> MaxAsync(
+    IAsyncEnumerable<int> source,
+    CancellationToken cancellationToken = default) {
+
+    int max = int.MinValue;
+    bool hasValue = false;
+
+    // cancellationToken 没有被使用
+    await foreach (int value in source.ConfigureAwait(false)) {
+        hasValue = true;
+        if (value > max) {
+            max = value;
+        }
+    }
+
+    return hasValue ? max : throw new InvalidOperationException();
+}
+
+// 正确
+public async Task<int> MaxAsync(
+    IAsyncEnumerable<int> source,
+    CancellationToken cancellationToken = default) {
+
+    int max = int.MinValue;
+    bool hasValue = false;
+
+    // cancellationToken 被传入了迭代器中
+    await foreach (
+        int value in source.WithCancellation(cancellationToken).ConfigureAwait(false)
+    ) {
+        hasValue = true;
+        if (value > max) {
+            max = value;
+        }
+    }
+
+    return hasValue ? max : throw new InvalidOperationException();
+}
+```
+
+原文：
+
+```csharp
+// 不需要 WithCancellation(cancellationToken)，
+// 应为它已经被传入了 ValueGenerator。
+await foreach (int value in
+    ValueGenerator(10, 5, cancellationToken).ConfigureAwait(false)) {
+    ...
+}
+```
+
+更正为：
+
+```csharp
+// 不需要 WithCancellation(cancellationToken)，
+// 应为它已经被传入了 ValueGenerator。
+await foreach (int value in
+    ValueGenerator(10, 5, cancellationToken).ConfigureAwait(false)) {
+    ...
+}
+```
 ### 9.6.2 实现 LINQ 支持的方法
 
 1. P308 最后一段
