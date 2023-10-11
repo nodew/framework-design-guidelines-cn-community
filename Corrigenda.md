@@ -339,7 +339,7 @@ public async Task<int> MaxAsync(
 
 ```csharp
 // 不需要 WithCancellation(cancellationToken)，
-// 应为它已经被传入了 ValueGenerator。
+// 因为它已经被传入了 ValueGenerator。
 async foreach (int value in
     ValueGenerator(10, 5, cancellationToken).ConfigureAwait(false)) {
     ...
