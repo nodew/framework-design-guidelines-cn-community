@@ -116,6 +116,67 @@ public enum MemberScopes
 
 ## 第五章，“成员设计准则”
 
+### 5.1 一般成员设计准则
+
+1. P113 第二段
+
+> **√ CONSIDER** 建议显式实现接口成员来模拟<del>差异</del><ins>变体</ins>（在``覆写''成员中的更改参数或返回类型）
+
+
+### 5.6 扩展方法
+
+1. P141 第一段示例代码
+
+```csharp
+// 该集合类型没有类型限制
+public class SomeCollection<T> { ... }
+
+// 非泛化的扩展类型
+public sealed class SomeCollectionComparisons {
+    // 该方法只有集合中的元素为可比较的值是才生效
+    public static T GetMinimumValue<T>(
+        this SomeCollection<T> source) where T : IComparable<T> {
+        ...
+    }
+}
+```
+
+更正为：
+
+```csharp
+// 该集合类型没有类型限制
+public class SomeCollection<T> { ... }
+
+// 非泛化的扩展类型
+public static class SomeCollectionComparisons {
+    // 该方法只有集合中的元素为可比较的值是才生效
+    public static T GetMinimumValue<T>(
+        this SomeCollection<T> source) where T : IComparable<T> {
+        ...
+    }
+}
+```
+
+### 5.7 运算符重载
+
+1. P152 第二段示例代码
+
+```csharp
+public partial struct DateTimeOffset {
+    public static implicit operator DateTimeOffset(DateTime dateTime) {...}
+    public static operator<(DateTimeOffset left, DateTimeOffset right){...}
+}
+```
+
+更正为：
+
+```csharp
+public partial struct DateTimeOffset {
+    public static implicit operator DateTimeOffset(DateTime dateTime) {...}
+    public static bool operator< (DateTimeOffset left, DateTimeOffset right){...}
+}
+```
+
 ## 第六章，“可扩展性设计”
 
 ### 6.2 基类
